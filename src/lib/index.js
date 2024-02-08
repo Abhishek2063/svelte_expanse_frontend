@@ -1,1 +1,2 @@
-// place files you want to import through the `$lib` alias in this folder.
+export const LOGIN = "/login"
+export const REGISTER = "/register"

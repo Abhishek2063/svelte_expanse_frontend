@@ -10,7 +10,8 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$components: 'src/components',
-			$images: 'src/lib/assets/images'
+			$images: 'src/assets/images',
+			$css: 'src/assets/css'
 		}
 	},
 
