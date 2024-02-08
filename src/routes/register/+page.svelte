@@ -1,8 +1,11 @@
 <script>
+	import { post } from '$lib/api.js';
 	import { fieldValidator } from '$lib/validation/custom.js';
-	import { LOGIN } from '$lib/index.js';
+	import { LOGIN, REGISTER_API } from '$lib/index.js';
 	import Input from '$components/Input.svelte';
 	import Button from '$components/Button.svelte';
+	import { message } from 'antd';
+	import { goto } from '$app/navigation';
 
 	let register_form_data = {
 		first_name: '',
@@ -67,13 +70,39 @@
 		return !hasErrors; // Return true if no errors, false otherwise
 	};
 
-	const handleSubmit = (event) => {
+	const handleSubmit = async (event) => {
 		event.preventDefault();
+
 		const isFormValid = validateForm(register_form_data, register_form_data_error);
 		if (isFormValid) {
-			console.log('form submitted success');
+			await post(REGISTER_API, register_form_data)
+				.then((response) => {
+					if (response.data.success) {
+						message.success(response.data.message);
+						register_form_data = {
+							first_name: '',
+							last_name: '',
+							email: '',
+							password: '',
+							confirm_password: ''
+						};
+						register_form_data_error = {
+							first_name: '',
+							last_name: '',
+							email: '',
+							password: '',
+							confirm_password: ''
+						};
+						goto(LOGIN);
+					} else {
+						message.error(response.data.message);
+					}
+				})
+				.catch((error) => {
+					message.error(error.response.data.message);
+				});
 		} else {
-			register_form_data_error = register_form_data_error ;
+			register_form_data_error = register_form_data_error;
 		}
 	};
 
@@ -200,5 +229,3 @@
 		</div>
 	</form>
 </div>
-
-
