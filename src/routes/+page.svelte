@@ -6,7 +6,7 @@
 </script>
 
 <div
-	class="background_image flex h-screen w-full items-center justify-center bg-cover bg-center bg-no-repeat"
+	class=" flex h-screen w-full items-center justify-center bg-cover bg-center bg-no-repeat"
 >
 	<div class="mx-auto max-w-md">
 		<div class="rounded-xl bg-white p-8 shadow-lg">
@@ -41,9 +41,7 @@
 </div>
 
 <style>
-	.background_image {
-		background-image: url('$images/background_image.jpg'); /* Replace with your image path */
-	}
+	
 	h1 {
 		width: 100%;
 	}
