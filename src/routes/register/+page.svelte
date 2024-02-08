@@ -6,6 +6,7 @@
 	import Button from '$components/Button.svelte';
 	import { message } from 'antd';
 	import { goto } from '$app/navigation';
+	import Loader from '$lib/loader.svelte';
 
 	let register_form_data = {
 		first_name: '',
@@ -22,6 +23,8 @@
 		password: '',
 		confirm_password: ''
 	};
+
+	let isLoader = false;
 
 	const validateForm = (register_form_data, register_form_data_error) => {
 		let hasErrors = false; // Flag to track if there are any errors
@@ -72,7 +75,7 @@
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-
+		isLoader = true;
 		const isFormValid = validateForm(register_form_data, register_form_data_error);
 		if (isFormValid) {
 			await post(REGISTER_API, register_form_data)
@@ -93,15 +96,19 @@
 							password: '',
 							confirm_password: ''
 						};
+						isLoader = false;
 						goto(LOGIN);
 					} else {
+						isLoader = false;
 						message.error(response.data.message);
 					}
 				})
 				.catch((error) => {
+					isLoader = false;
 					message.error(error.response.data.message);
 				});
 		} else {
+			isLoader = false;
 			register_form_data_error = register_form_data_error;
 		}
 	};
@@ -136,6 +143,9 @@
 </script>
 
 <!-- markup (zero or more items) goes here -->
+{#if isLoader}
+<Loader />
+{/if}
 <div class=" flex h-screen w-full items-center justify-center">
 	<form class="mb-4 max-w-md rounded bg-white px-8 pb-8 pt-6 shadow-md" on:submit={handleSubmit}>
 		<h1 class="mb-2 text-center text-lg font-bold text-cyan-500">Create an account?</h1>
