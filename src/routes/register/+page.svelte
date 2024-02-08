@@ -21,64 +21,61 @@
 	};
 
 	const validateForm = (register_form_data, register_form_data_error) => {
-	let hasErrors = false; // Flag to track if there are any errors
-	
-	for (const key in register_form_data) {
-		if (register_form_data.hasOwnProperty(key)) {
-			let type = '';
-			let maxLength = null;
-			let minLength = null;
-			
-			if (key === 'first_name' || key === 'last_name') {
-				type = 'alphabetics';
-				maxLength = 50;
-				minLength = 2;
-			}
-			if (key === 'email') {
-				type = 'email';
-				maxLength = 255;
-				minLength = 8;
-			}
-			if (key === 'password' || key === 'confirm_password') {
-				type = 'password';
-				maxLength = 20;
-				minLength = 8;
-			}
-			
-			const error = checkValidation(
-				key,
-				register_form_data[key],
-				type,
-				maxLength,
-				minLength,
-				register_form_data
-			);
-			
-			console.log(error, 'error');
-			
-			// Update error message in the register_form_data_error object
-			register_form_data_error[key] = error.getError ? error.errorMsg : '';
-			
-			// Update hasErrors flag if there is an error
-			if (error.getError) {
-				hasErrors = true;
+		let hasErrors = false; // Flag to track if there are any errors
+
+		for (const key in register_form_data) {
+			if (register_form_data.hasOwnProperty(key)) {
+				let type = '';
+				let maxLength = null;
+				let minLength = null;
+
+				if (key === 'first_name' || key === 'last_name') {
+					type = 'alphabetics';
+					maxLength = 50;
+					minLength = 2;
+				}
+				if (key === 'email') {
+					type = 'email';
+					maxLength = 255;
+					minLength = 8;
+				}
+				if (key === 'password' || key === 'confirm_password') {
+					type = 'password';
+					maxLength = 20;
+					minLength = 8;
+				}
+
+				const error = checkValidation(
+					key,
+					register_form_data[key],
+					type,
+					maxLength,
+					minLength,
+					register_form_data
+				);
+
+				// Update error message in the register_form_data_error object
+				register_form_data_error[key] = error.getError ? error.errorMsg : '';
+
+				// Update hasErrors flag if there is an error
+				if (error.getError) {
+					hasErrors = true;
+				}
 			}
 		}
-	}
-	
-	return !hasErrors; // Return true if no errors, false otherwise
-};
 
-const handleSubmit = (event) => {
-	event.preventDefault();
-	const isFormValid = validateForm(register_form_data, register_form_data_error);
-	if (isFormValid) {
-		console.log('form submitted success');
-	} else {
-		console.log('form has errors');
-		console.log(register_form_data_error,"register_form_data_error");
-	}
-};
+		return !hasErrors; // Return true if no errors, false otherwise
+	};
+
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		const isFormValid = validateForm(register_form_data, register_form_data_error);
+		if (isFormValid) {
+			console.log('form submitted success');
+		} else {
+			register_form_data_error = register_form_data_error ;
+		}
+	};
 
 	const handleKeyDown = (event) => {
 		if (event.key === 'Enter' || event.key === 'enter') {
@@ -96,7 +93,6 @@ const handleSubmit = (event) => {
 			value = e.target.value.replace(/\s+/g, '');
 		}
 		let error = checkValidation(e.target.name, value, type, maxLength, minLength);
-		console.log(error, 'error');
 		// Update form data and error messages
 		register_form_data = {
 			...register_form_data,
@@ -108,8 +104,6 @@ const handleSubmit = (event) => {
 			[e.target.name]: error.getError ? error.errorMsg : ''
 		};
 	};
-	console.log(register_form_data, 'register_form_data');
-	console.log(register_form_data_error, 'register_form_data_error');
 </script>
 
 <!-- markup (zero or more items) goes here -->
@@ -207,6 +201,4 @@ const handleSubmit = (event) => {
 	</form>
 </div>
 
-<style>
-	/* your styles go here */
-</style>
+
